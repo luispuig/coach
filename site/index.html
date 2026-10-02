@@ -713,7 +713,8 @@ const clock = (s) => `${Math.floor(Math.max(0, s) / 60)}:${String(Math.max(0, s)
 
 let lock = null;
 const wake = async () => { try { lock = await navigator.wakeLock?.request("screen"); } catch {} };
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.sesion) wake(); if (rest) runTick(); });
+const CARGADA = Date.now();
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && !S.sesion && Date.now() - CARGADA > 3 * 3600000) { location.reload(); return; } if (document.visibilityState === "visible" && S.sesion) wake(); if (rest) runTick(); });
 
 const toast = (msg) => {
   const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; t.setAttribute("role", "status");
