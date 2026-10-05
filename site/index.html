@@ -1138,11 +1138,12 @@ const cifrasA = (f) => {
   const cerca = (q, ref, dias) => (q && tt(ref[0]) - tt(q[0]) <= dias * DAY ? q : null);
   const p = atOrBefore(TREND, f), p0 = p && cerca(atOrBefore(TREND, iso(new Date(tt(p[0]) - 7 * DAY))), p, 10);
   const c = atOrBefore(PROG.cintura, f), c0 = c && cerca([...PROG.cintura].reverse().find(([g]) => g < c[0]), c, 21);
-  const tile = (nombre, v, d, det) => (v == null ? "" : `<div><span class="small">${nombre}</span><b class="num">${fmtKg(v)}</b><span class="small">${d ? `${flecha(d)} · ` : ""}${det}</span></div>`);
+  const viejo = (g) => (tt(f) - tt(g) > 7 * DAY ? ` · del ${+g.slice(8, 10)} ${MES[+g.slice(5, 7)]}` : "");
+  const tile = (nombre, v, d, det) => (v == null ? "" : `<div><span class="small">${nombre}</span><b class="num">${fmtKg(v)}</b><span class="small">${d ? `${flecha(d)} ` : ""}${det}</span></div>`);
   return [
-    tile("Peso (tend.)", p?.[1], p0 && p0[0] !== p[0] ? p[1] - p0[1] : null, p ? `kg · ${dm(p[0])}` : ""),
-    tile("Cintura alta", c?.[1], c0?.[1] != null && c[1] != null ? c[1] - c0[1] : null, c ? `cm · ${dm(c[0])}` : ""),
-    tile("Cintura baja", c?.[2], c0?.[2] != null && c[2] != null ? c[2] - c0[2] : null, c ? `cm · ${dm(c[0])}` : ""),
+    tile("Peso (tend.)", p?.[1], p0 && p0[0] !== p[0] ? p[1] - p0[1] : null, p ? `kg${viejo(p[0])}` : ""),
+    tile("Cintura alta", c?.[1], c0?.[1] != null && c[1] != null ? c[1] - c0[1] : null, c ? `cm${viejo(c[0])}` : ""),
+    tile("Cintura baja", c?.[2], c0?.[2] != null && c[2] != null ? c[2] - c0[2] : null, c ? `cm${viejo(c[0])}` : ""),
   ].join("");
 };
 const lineChart = (id, series, desde, hasta, unidad, alto = 170) => {
